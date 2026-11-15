@@ -64,7 +64,10 @@ type GradeResult struct {
 
 func GradeResponse(qType string, correctAnswer *Answer, options []Option, selectedOption string, selectedOptionIndex *int, answerText string) GradeResult {
 	if qType == "multiple_choice" {
-		if selectedOptionIndex != nil && *selectedOptionIndex < len(options) {
+		if selectedOptionIndex != nil {
+			if *selectedOptionIndex < 0 || *selectedOptionIndex >= len(options) {
+				return GradeResult{Error: "Selected option index is out of range"}
+			}
 			selectedOption = options[*selectedOptionIndex].Text
 		}
 		if selectedOption == "" {
